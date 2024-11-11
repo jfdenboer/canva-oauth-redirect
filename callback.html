@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAuth Callback</title>
+</head>
+<body>
+    <h1>OAuth Callback</h1>
+    <p>Verwerken van de authorization code...</p>
+
+    <script>
+        // Extract de 'code' parameter uit de URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const authorizationCode = urlParams.get('code');
+
+        // Stuur de authorization code naar je lokale applicatie
+        fetch("http://127.0.0.1:8000/store_code", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code: authorizationCode })
+        }).then(() => {
+            document.body.innerHTML = "<p>Authorization code succesvol verzonden naar de lokale applicatie.</p>";
+        }).catch(error => {
+            document.body.innerHTML = `<p>Fout bij het verzenden van de code: ${error.message}</p>`;
+        });
+    </script>
+</body>
+</html>
